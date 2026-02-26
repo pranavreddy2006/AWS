@@ -1,0 +1,88 @@
+🔵 PART A — Creating Bucket & Uploading Data
+✅ Step 1: Create Bucket
+Go to:
+AWS Console → S3 → Create bucket
+Enter:
+Bucket name: 23BD1A052D_S3 (must be globally unique)
+Region: Choose required region
+❌ Uncheck Block all public access
+✔ Acknowledge warning
+Enable Bucket Versioning
+Enable Object Ownership
+Click Create bucket
+✅ Step 2: Upload Objec
+Open bucket
+Click Upload
+Select file (image, pdf, text file etc.)
+Click Upload
+✅ Step 3: Make Object Public
+Go to Permissions
+Edit ACL
+Under Everyone (public access) → ✔ Read
+Save
+select bucket -> actions -> make public using ACL
+Copy Object URL
+Open in Incognito mode
+✔ File loads publicly
+
+🔵 PART B — Versioning & Delete Marker
+🔹 Delete Object
+Select file
+Click Delete
+It disappears from normal view.
+🔹 Show Versions
+Enable Show versions
+You will see:
+Delete marker
+Previous object version
+🔹 Remove Delete Marker
+Select delete marker
+Click Delete
+✔ Original object is restored
+
+🔵 PART C — Cross Region Replication (CRR)
+⚠ Prerequisites
+✔ Versioning enabled on both buckets
+✔ Buckets in different regions
+✅ Step 1: Create Destination Bucket
+Create new bucket in another region
+Enable versioning.
+✅ Step 2: Create Replication Rule
+Open Source bucket
+Go to Management
+Click Create replication rule
+Fill:
+Rule name
+Apply to all objects
+Destination bucket (other region)
+Select LabRole / AWS-managed role
+Click Save.
+✅ Step 3: Test Replication
+Upload new file to source bucket.
+Now check destination bucket
+
+🔵 PART D — Static Website Hosting
+✅ Step 1: Upload Files
+Upload:
+index.html
+error.html
+✅ Step 2: Enable Static Hosting
+Go to Properties
+Scroll to Static Website Hosting
+Click Edit
+Enable
+Enter:
+Index: index.html
+Error: error.html
+Save
+✅ Step 3: Make Public
+Enable public read at:
+Bucket level (ACL)
+Object level (ACL)
+✅ Step 4: Access Website
+Copy:
+Bucket Website Endpoint which is in permissions scroll down (swh)
+Example:
+http://bucket-name.s3-website-region.amazonaws.com
+Open in browser.
+✔ Website loads
