@@ -3,154 +3,88 @@
 🔹 Launch Ubuntu EC2 Instance in Amazon Web Services
 4
 Steps:
-
 Go to AWS Console → EC2 → Launch Instance
-
 Choose Ubuntu Server AMI
-
 Select instance type (e.g., t2.micro – Free Tier)
-
 Create/Select Key Pair (.pem)
-
 Configure Security Group:
-
 Type: SSH
-
 Port: 22
-
 Source: My IP
-
 Launch Instance
 
 🔐 Connect to Ubuntu EC2 Using PuTTY (.ppk)
 ✅ Prerequisites
-
 Ubuntu EC2 running
-
 Public IP / DNS
-
 PuTTY installed (Windows)
-
 .ppk key file
-
 Download PuTTY:
 https://www.putty.org
-
 🔹 Step 1: Convert .pem to .ppk (If Needed)
 4
-
 Open PuTTYgen
-
 Click Load
-
 Select .pem file (choose All Files)
-
 Click Save private key
-
 Save as .ppk
-
 ✔ Conversion complete
-
 🔹 Step 2: Configure PuTTY
 4
-
 Open PuTTY
-
 In Session:
-
 Host Name:
-
 ubuntu@<Public-IP>
-
 Go to:
-
 Connection → SSH → Auth → Credentials
-
 Browse & select .ppk file
-
 Click Open
-
 Click Yes (Security Alert)
-
 🎉 Connected!
-
 🧪 Verify:
 whoami
-
 Output:
-
 ubuntu
+
 ☁️ Connect Using AWS CloudShell
 4
-
 Open CloudShell (top-right terminal icon)
-
 Go to EC2 → Instance → Connect
-
 Choose SSH Client
-
 Copy the ssh -i command
-
 Upload .pem file into CloudShell
-
 Run:
-
 chmod 400 keyname.pem
 ssh -i keyname.pem ubuntu@<public-ip>
-
 ✅ Connected Successfully
 
 🖥️ Create & Connect Windows EC2 (RDP)
 🔹 Step 1: Launch Windows Instance
 4
-
 EC2 → Launch Instance
-
 Choose Windows Server 2019/2022
-
 Choose instance type
-
 Security Group:
-
 Type: RDP
-
 Port: 3389
-
 Source: My IP
-
 Download Key Pair (.pem)
-
 Launch
-
 🔹 Step 2: Get Administrator Password
 4
-
 Select Instance → Connect
-
 Choose RDP Client
-
 Click Get Password
-
 Upload .pem
-
 Click Decrypt
-
 Copy Password
-
 🔹 Step 3: Connect via RDP
-
 Press Windows + R
-
 Type:
-
 mstsc
-
 Enter Public IP/DNS
-
 Username: Administrator
-
 Paste password
-
 🎉 Windows Desktop appears
 
 🌍 Install & Deploy NGINX on Ubuntu EC2
@@ -158,83 +92,52 @@ Paste password
 sudo apt update
 sudo apt install nginx -y
 🔹 Test in Browser
-
 Open:
-
-http://<Public-IP>
-
+http://<Public-IP
 You should see:
-
 Welcome to nginx
 🔹 Default Web Directory
 /var/www/html
 🔹 Deploy Simple HTML
 cd /var/www/html
 sudo nano index.html
-
 Add sample content:
-
 <h1>Hello from EC2!</h1>
-
 Save & Exit
-
 🔹 Restart Nginx
 sudo systemctl restart nginx
-
 Refresh browser ✅
 
 
 Step 1: Launch EC2 Ubuntu Instance
-
 Go to AWS Console
-
 Launch an EC2 Instance
-
 Choose:
-
 AMI → Ubuntu Server 22.04
-
 Instance type → t2.micro (Free tier)
-
 Allow Inbound Rules:
-
 SSH → Port 22
-
 HTTP → Port 80
-
 Launch and connect using:
-
 ssh -i your-key.pem ubuntu@your-ec2-public-ip
 ✅ Step 2: Install Docker on Ubuntu
-
 Run these commands inside EC2:
-
 sudo apt update
 sudo apt install docker.io -y
-
 Start and enable Docker:
-
 sudo systemctl start docker
 sudo systemctl enable docker
-
 Check Docker version:
-
 docker --version
-
 (Optional: Run Docker without sudo)
-
 sudo usermod -aG docker ubuntu
 newgrp docker
 ✅ Step 3: Create Project Folder
 mkdir mywebsite
 cd mywebsite
-
 Create your index.html:
-
 nano index.html
-
 Example:
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -244,34 +147,22 @@ Example:
     <h1>Hello from EC2 + Docker 🚀</h1>
 </body>
 </html>
-
 Save → CTRL+X → Y → Enter
-
 ✅ Step 4: Create Dockerfile
-
 Inside same folder:
-
 nano Dockerfile
-
 Paste this:
-
 FROM nginx:latest
 COPY index.html /usr/share/nginx/html/index.html
-
 Save and exit.
-
 ✅ Step 5: Build Docker Image
 docker build -t my-nginx-site .
 ✅ Step 6: Run Docker Container
 docker run -d -p 80:80 --name mycontainer my-nginx-site
-
 Check running container:
-
 docker ps
 ✅ Step 7: Open in Browser
-
 Go to:
-
 http://your-ec2-public-ip
-
 🎉 You will see your index.html page live!
+
