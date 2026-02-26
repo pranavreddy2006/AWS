@@ -1,0 +1,106 @@
+🔹 STEP 1: Create Custom VPC
+Login → AWS Console
+Search VPC
+Click Create VPC
+Select VPC only
+Enter:
+Name: Custom-VPC
+IPv4 CIDR: 10.0.0.0/16
+Click Create VPC
+✔ VPC Created
+🔹 STEP 2: Create Subnets
+🟢 Create Public Subnet
+Go to Subnets
+Click Create subnet
+Select Custom-VPC
+Enter:
+Name: Public-Subnet
+AZ: us-east-1a (any one)
+IPv4 CIDR: 10.0.1.0/24
+Click Create
+🔵 Create Private Subnet
+Click Create subnet
+Select Custom-VPC
+Enter:
+Name: Private-Subnet
+Same AZ
+IPv4 CIDR: 10.0.2.0/24
+Click Create
+✔ Both subnets created
+🔹 STEP 3: Enable Public IP for Public Subnet
+Go to Subnets
+Select Public-Subnet
+Click Actions → Edit subnet settings
+Enable:
+✔ Auto-assign Public IPv4
+Save
+❌ Do NOT enable for Private Subnet
+🔹 STEP 4: Create Internet Gateway
+Go to Internet Gateways
+Click Create Internet Gateway
+Name: Custom-IGW
+Click Create
+Attach IGW
+Select IGW
+Click Actions → Attach to VPC
+Choose Custom-VPC
+Click Attach
+✔ IGW Attached
+🔹 STEP 5: Create Route Table for Public Subnet
+Go to Route Tables
+Click Create route table
+Name: Public-Route-Table
+VPC: Custom-VPC
+Create
+Associate Public Subnet
+Select Public-Route-Table
+Click Subnet Associations
+Edit → Select Public-Subnet
+Save
+Add Internet Route
+Go to Routes
+Click Edit routes
+Add:
+Destination: 0.0.0.0/0
+Target: Internet Gateway → Custom-IGW
+Save
+✔ Public subnet now has internet
+🔹 STEP 6: Launch Public EC2
+Go to EC2 → Launch Instance
+Name: Public-EC2
+AMI: Ubuntu
+Instance type: t3.micro
+Key pair: select/create
+Network Settings:
+VPC: Custom-VPC
+Subnet: Public-Subnet
+Auto-assign Public IP: Enabled
+Allow:
+SSH (22)
+HTTP (80)
+HTTPS (443)
+Click Launch
+🔹 STEP 7: Launch Private EC2
+Launch Instance again
+Name: Private-EC2
+Same AMI & type
+Same key pair
+Network Settings:
+VPC: Custom-VPC
+Subnet: Private-Subnet
+Auto-assign Public IP: Disabled
+Allow:
+SSH (22)
+HTTP (80)
+HTTPS (443)
+Click Launch
+🔹 STEP 8: Test Connections
+Connect to Public EC2
+From terminal:
+ssh -i key.pem ubuntu@<Public-IP>
+✔ Works
+Try Connecting to Private EC2
+ssh -i key.pem ubuntu@10.0.2.177
+❌ Output:
+Connection timed out
+✔ This is correct behavior
