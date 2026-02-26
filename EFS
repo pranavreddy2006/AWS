@@ -1,0 +1,99 @@
+🔹 STEP 1: Launch 2 EC2 Instances
+
+Create:
+
+Instance	Subnet
+EFS-1
+EFS-2	
+with Amazon
+Important Security Group Rule
+Add:
+
+Type	Port	Source
+NFS	2049	Anywhere (0.0.0.0/0) OR VPC CIDR
+
+Port 2049 is required for EFS.
+
+🔹 STEP 2: Create EFS File System
+
+Go to:
+
+EFS → Create File System
+
+Choose:
+
+VPC: Default
+
+Enable regional
+
+Keep default performance
+
+In Network settings:
+
+Remove default SG
+
+Attach your NFS security group
+
+Click Create.
+
+🔹 STEP 3: Connect to Both EC2 Instances
+
+Open two PowerShell windows.
+
+SSH into both:
+
+ssh -i key.pem ec2-user@<public-ip>
+
+Switch to root:
+
+sudo su
+🔹 STEP 4: Install EFS Utilities
+
+For Amazon Linux:
+
+yum install -y amazon-efs-utils
+
+For Ubuntu (if used):
+
+apt install -y amazon-efs-utils
+🔹 STEP 5: Mount EFS
+
+Go to:
+
+EFS → Your File System → Attach
+
+Copy the mount command.
+
+It will look like:
+
+sudo mount -t efs fs-xxxx:/ efs
+
+First create mount directory:
+
+mkdir efs
+
+Then run mount command on BOTH instances.
+
+🔹 STEP 6: Verify Mount
+
+Run:
+
+df -h
+
+You should see something like:
+
+fs-xxxx.efs.region.amazonaws.com:/  mounted on /efs
+🔹 STEP 7: Test Shared Storage
+
+On EFS-1:
+
+cd /efs
+touch file1
+ls
+
+Now go to EFS-2:
+
+cd /efs
+ls
+
+✅ You will see file1
