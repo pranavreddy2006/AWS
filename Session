@@ -1,0 +1,75 @@
+Step 1: Start Required Services 
+Open terminal and start Apache and MySQL: 
+sudo service apache2 start 
+sudo service mysql start 
+Step 2: Open DVWA in Browser 
+Open Firefox and enter: 
+http://127.0.0.1/dvwa
+Step 4: Set Security Level 
+ Go to DVWA Security 
+ Select LOW 
+PART B: Testing Authentication Weaknesses 
+Experiment 1: Weak Password Authentication 
+Step 1: Open Brute Force Module 
+Navigate to: 
+DVWA → Vulnerabilities → Brute Force
+Step 2: Try Common Passwords 
+Enter: 
+Username: admin 
+Password: password 
+Observation 
+Successful login indicates weak authentication. 
+
+Experiment 2: Manual Brute Force Attack 
+Enter Username (Same Every Time) 
+In Username field, type: 
+admin 
+Do NOT change username. 
+Step 3: Try Passwords ONE BY ONE 
+Now you will manually try passwords (this is the “manual brute force”). 
+Attempt 1 
+ Username: admin 
+ Password: admin 
+ Click Login 
+❌ If it fails → try next password 
+Attempt 2 
+ Username: admin 
+ Password: 123456 
+ Click Login 
+❌ If it fails → try next password 
+Attempt 3 
+ Username: admin 
+ Password: password 
+ Click Login
+LOGIN SUCCESSFUL 
+Step 4: Observe What Happened 
+ DVWA did NOT block you 
+ DVWA did NOT lock account 
+ DVWA allowed unlimited attempts 
+This is called Brute Force Vulnerability 
+
+PART C: Testing Session Management Vulnerabilities 
+✅ Experiment 3: Session ID Analysis 
+Step 1: Login to DVWA 
+Open browser developer tools: 
+Right Click → Inspect → Storage → Cookies
+Look for: 
+PHPSESSID copy it
+Experiment 4: Session Hijacking 
+BEFORE YOU START (IMPORTANT) 
+DVWA security level = LOW 
+You are logged in as admin in DVWA
+
+Step 3: Open Attacker Browser (Private Window) 
+1. Press: 
+Ctrl + Shift + P 
+(Private Window opens) 
+Do NOT login here. 
+Step 4: Paste Session ID in Attacker Browser 
+1. In Private Window, go to: http://127.0.0.1/dvwa 
+2. Right click → Inspect 
+3. Go to Storage → Cookies 
+4. Click: http://127.0.0.1 
+5. Find PHPSESSID 
+6. Replace its value with the copied PHPSESSID (5f6194766020dcaa2c906358cbd2941b) 
+7. Press Enter 
