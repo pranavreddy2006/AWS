@@ -1,0 +1,54 @@
+1.VPC with Bastion Server 
+VPC & Subnet Design
+VPC CIDR: 10.0.0.0/16
+Public Subnet (Bastion Server): 10.0.1.0/24
+Private Subnet (Database Server): 10.0.2.0/24
+
+2. Security Group Configuration (VERY IMPORTANT)
+Bastion Server Security Group (Public Subnet)
+Allows SSH (22) from:        My IP (Database Administrator)
+    Database Server Security Group (Private Subnet)
+Allows MySQL / Aurora (3306) from:   custom 		10.0.1.0/24 (Public subnet / Bastion subnet)
+Allows SSH (22) from:                           custom    	 Private IP of Bastion Server
+Does NOT allow public access
+
+3.Security Outcome
+Database server is NOT publicly accessible
+Only Bastion server can connect to DB server using SSH
+External users cannot access DB directly
+4.EC2 Instance Creation
+Bastion Server
+Subnet: Public Subnet (10.0.1.0/24)
+Key pair: bastion.pem 
+Operating System: Ubuntu
+Database Server
+Subnet: Private Subnet (10.0.2.0/24)
+Key pair: dbserver.pem
+Operating System: Ubuntu
+
+5.Copy DB Server Key to Bastion Server
+Database server is in private subnet
+Direct SSH from local system is NOT possible
+DB server key must be copied to Bastion server
+Command (PowerShell):
+scp -i bastion.pem dbserver.pem ubuntu@<BASTION_PUBLIC_IP>:/home/ubuntu/
+File is copied securely using SCP
+dbserver.pem will now be available inside Bastion server
+
+6.Connect to Bastion Server
+SSH Command:
+ssh -i bastion.pem ubuntu@<BASTION_PUBLIC_IP>
+Verify key files:
+ls
+Output:
+bastion.pem
+dbserver.pem
+
+7.Connect from Bastion to Database Server
+SSH from Bastion:
+ssh -i dbserver.pem ubuntu@10.0.2.x
+Connection to DB server is successful
+Database administrator can now:
+Update database configurations
+Install required packages-------problem occurs
+Restart MySQL service
