@@ -1,0 +1,53 @@
+🔹 Step 1
+Open Kali Linux in VirtualBox.
+🔹 Step 2
+Open Terminal.
+🔹 Step 3: Start Local HTTP Server
+Run:
+python3 -m http.server 8080
+This starts a local web server on port 8080.
+You should see output like:
+Serving HTTP on 0.0.0.0 port 8080 ...
+🔹 Step 4: Start Packet Capture
+Open a new terminal window and run:
+sudo tcpdump -i any -w capture.pcap port 8080
+Explanation:
+-i any → capture on all interfaces
+-w capture.pcap → save packets to file
+port 8080 → capture only HTTP traffic on port 8080
+🔹 Step 5: Generate Traffic
+Open Firefox in Kali Linux and go to:
+http://localhost:8080
+Refresh the page multiple times to generate traffic.
+🔹 Step 6: Stop Capture
+Go back to the tcpdump terminal.
+Press:
+Ctrl + C
+It will stop capturing and display number of packets captured.
+The file capture.pcap is now saved.
+🔹 Step 7: Locate Capture File
+Click Kali Dragon icon (top-left)
+Open File Manager
+Open Home folder
+Locate capture.pcap
+🔹 Step 8: Open in Wireshark
+Double-click capture.pcap.
+It opens directly in:
+4
+Wireshark for analysis.
+🔹 Step 9: Filter Login Packets
+In Wireshark filter bar, type:
+http.request.method == "POST"
+Press Enter.
+Now only HTTP POST packets are shown.
+🔹 Step 10: Analyze Packet Details
+Click on any HTTP packet.
+You will observe:
+Browser information (User-Agent)
+Operating System
+Browser version
+Language
+Requested URLs
+If form submitted → username & password in plain text
+
+This proves that HTTP is insecure.
