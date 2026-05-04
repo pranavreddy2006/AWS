@@ -1,0 +1,83 @@
+Nice — this is an important AWS IAM lab. I’ll make it **clean, exact, and exam-ready**, plus give you **perfect scenario answers you can write directly**.
+
+---
+
+# 🔐 AWS IAM Role for EC2 (S3 Access Without Keys)
+
+👉 AWS Identity and Access Management
+👉 Amazon EC2
+👉 Amazon S3
+
+---
+
+## 🔹 PART 1: Create IAM Role
+
+
+### ✅ Steps:
+
+1. Open **IAM Console**
+2. Click **Roles → Create role**
+
+---
+
+### 🔧 Configure:
+
+* Trusted entity → **AWS Service**
+* Use case → **EC2**
+
+Click **Next**
+
+---
+
+## 🔹 PART 2: Add Permissions
+
+1. Search → `AmazonS3FullAccess`
+2. Select policy
+3. Click **Next**
+
+---
+
+## 🔹 PART 3: Name Role
+
+* Role Name → `EC2-S3-Role`
+
+Click **Create role**
+
+---
+
+## 🔹 PART 4: Attach Role to EC2
+
+1. Go to EC2 Dashboard
+2. Select running instance
+3. Click:
+
+   * **Actions → Security → Modify IAM role**
+4. Select → `EC2-S3-Role`
+5. Click **Update**
+
+---
+
+## 🔹 PART 5: Verify (VERY IMPORTANT)
+
+SSH into instance:
+
+```bash
+aws s3 ls
+aws ec2 describe-instances
+```
+
+---
+
+### ✅ Expected Result:
+
+* `aws s3 ls` → ✅ Works
+* `aws ec2 describe-instances` → ❌ Unauthorized
+
+---
+
+### 💡 Reason:
+
+✔ EC2 gets **temporary credentials automatically**
+✔ No need for access keys (secure method)
+
+---
