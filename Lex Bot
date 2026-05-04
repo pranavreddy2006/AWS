@@ -1,0 +1,200 @@
+Great — this is your **Week-11 Amazon Lex lab**. I’ll clean it into a **perfect step-by-step guide + clear scenario answers** so you can **save, practice, and write in exam confidently**.
+
+---
+
+# 🤖 AWS AMAZON LEX – STEP-BY-STEP LAB
+
+👉 Amazon Lex
+
+---
+
+## 🔹 PART 1: Create Bot
+
+### ✅ Steps:
+
+1. Login to AWS Console
+2. Search → **Amazon Lex**
+3. Click **Create bot**
+
+---
+
+### 🧾 Configure Bot:
+
+* Select → **Create a blank bot**
+* Bot Name → `HotelBookingBot`
+* IAM Role → Create new role
+* Language → English
+* Voice → optional
+
+Click **Done**
+
+---
+
+## 🔹 PART 2: Create Intent
+
+1. Go to **Intents**
+2. Click **Create intent**
+
+* Name → `BookHotel`
+
+---
+
+## 🔹 PART 3: Add Utterances (User Inputs)
+
+👉 These are how users speak
+
+Add:
+
+```id="1tn9n7"
+I want to book a hotel
+Book a room
+Reserve hotel
+I need a room
+```
+
+---
+
+## 🔹 PART 4: Create Slots (Collect Data)
+
+👉 Slots = user input fields
+
+---
+
+### 🧍 Slot 1: Age
+
+* Slot name → `age`
+* Type → `AMAZON.Number`
+* Prompt → "What is your age?"
+* Required → Yes
+
+---
+
+### ⚠️ Add Condition (Important)
+
+If age < 18:
+
+* Go to → Slot → Advanced options → Conditional branching
+* Add condition:
+
+```id="zz67z4"
+If {age} < 18
+Response: You are not eligible for booking
+```
+
+---
+
+### 🌍 Slot 2: Location
+
+* Name → `location`
+* Type → `AMAZON.City`
+* Prompt → "Which city do you want?"
+
+---
+
+### 📅 Slot 3: Check-in Date
+
+* Name → `checkin`
+* Type → `AMAZON.Date`
+* Prompt → "Enter check-in date"
+
+👉 Add retry prompt:
+
+```id="2dfp1u"
+Please enter valid date (YYYY-MM-DD)
+```
+
+---
+
+### 🌙 Slot 4: Nights
+
+* Name → `nights`
+* Type → `AMAZON.Number`
+* Prompt → "How many nights?"
+
+---
+
+## 🔹 PART 5: Custom Slot Type (Room Type)
+
+1. Go to **Slot Types**
+2. Click **Add**
+
+* Name → `RoomType`
+
+Add values:
+
+```id="l03f6r"
+Single
+Double
+Suite
+```
+
+---
+
+### Use in Intent:
+
+* Slot name → `roomType`
+* Slot type → `RoomType`
+
+---
+
+## 🔹 PART 6: Add Buttons (Response Cards)
+
+👉 Helps user click instead of typing
+
+* Go to slot prompt → Add **Card group**
+
+Example:
+
+* Title → Select Room Type
+* Buttons:
+
+  * Single
+  * Double
+  * Suite
+
+---
+
+## 🔹 PART 7: Configure Responses
+
+### 🟢 Initial Response:
+
+```id="gb8hb1"
+Welcome! What is your name?
+```
+
+### ✅ Confirmation:
+
+```id="4lxqf6"
+Confirm booking in {location} for {nights} nights?
+```
+
+---
+
+## 🔹 PART 8: Build & Test
+
+1. Click **Build**
+2. Use test chatbot
+
+---
+
+### 🧪 Sample Flow:
+
+```id="c5ccbh"
+User: Book a hotel
+Bot: What is your age?
+User: 25
+Bot: Which city?
+User: Hyderabad
+Bot: Check-in date?
+User: Tomorrow
+Bot: Nights?
+User: 2
+Bot: Room type?
+User: Double
+Bot: Confirm booking?
+User: Yes
+Bot: Booking confirmed
+```
+
+
+Just tell me 👍
