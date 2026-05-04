@@ -1,0 +1,338 @@
+Great — this is a solid lab. I’ll convert your notes into a **clean, exact, step-by-step guide you can follow without confusion**, and then give you **clear answers for all scenarios (exam-ready)**.
+
+---
+
+# 🚀 AWS Elastic Beanstalk – Step-by-Step Lab
+
+👉 AWS Elastic Beanstalk
+
+---
+
+## 🔹 PART 1: Create Application
+
+### ✅ Steps:
+
+1. Login to AWS Console
+2. Search → **Elastic Beanstalk**
+3. Click **Create Application**
+
+---
+
+### 📝 Fill Details:
+
+* Application Name → `MyApp`
+* Description → optional
+
+---
+
+## 🔹 PART 2: Create Environment
+
+1. Click **Create Environment**
+2. Select:
+
+   * ✅ Web Server Environment
+3. Click **Select**
+
+---
+
+## 🔹 PART 3: Configure Environment
+
+### 🧾 Basic Info:
+
+* Environment Name → `MyApp-env`
+
+---
+
+### ⚙️ Platform Selection (IMPORTANT)
+
+Choose based on your app:
+
+* `.war` → **Apache Tomcat**
+* `.zip (Node app)` → **Node.js**
+* Python → **Python**
+
+---
+
+### 📦 Upload Code
+
+* Select → **Upload your code**
+* Upload `.war` or `.zip`
+
+---
+
+## 🔹 PART 4: Service Access
+
+* Service Role → `LabRole`
+* EC2 Instance Profile → `LabInstanceProfile`
+* Key Pair → optional
+
+---
+
+## 🔹 PART 5: Network
+
+* VPC → Default
+* Subnets → Default
+* Enable → **Public IP**
+
+---
+
+## 🔹 PART 6: Instance & Scaling
+
+* Instance Type → `t2.micro`
+* Min → 1
+* Max → 2
+
+👉 Enable Load Balancer (recommended)
+
+---
+
+## 🔹 PART 7: Deploy
+
+1. Click **Review**
+2. Click **Create**
+
+⏳ Wait 3–5 minutes
+
+---
+
+## 🌐 Access App
+
+* After deployment → You get a **URL**
+* Open in browser → App runs
+
+---
+
+## 🔄 Update App
+
+1. Open environment
+2. Click **Upload and Deploy**
+3. Upload new version
+
+---
+
+# 🧠 SCENARIO QUESTIONS (EXAM ANSWERS)
+
+---
+
+## ⚠️ Scenario 1: App Not Loading
+
+### Reasons:
+
+* Wrong port/config
+* Deployment failed
+* Security group blocking
+
+### Fix:
+
+* Check **Events tab**
+* Check **Logs**
+* Verify app runs on correct port
+
+---
+
+## ⚠️ Scenario 2: Wrong Structure
+
+### Problem:
+
+* Files inside extra folder
+
+👉 Example:
+
+```id="mz9umg"
+wrong: /app-folder/app.war
+correct: /app.war
+```
+
+### Fix:
+
+* Zip correctly (no extra folder)
+
+---
+
+## ⚠️ Scenario 3: Wrong Platform
+
+### Problem:
+
+* Tomcat app deployed on Node.js
+
+### Result:
+
+* App crash / error page
+
+### Fix:
+
+* Recreate environment with correct platform
+  👉 You **cannot fully change platform later**
+
+---
+
+## ⚠️ Scenario 4: Yellow Health Warning
+
+### Causes:
+
+* High CPU
+* App errors
+* Failed health checks
+
+### Check:
+
+* Events
+* Logs
+* Monitoring
+
+### Fix:
+
+* Restart app
+* Fix code errors
+* Scale instances
+
+---
+
+## ⚠️ Scenario 5: Errors in Logs
+
+### Meaning:
+
+* Code or dependency issue
+
+### Fix:
+
+* Check:
+
+  * `web.stdout.log`
+  * `web.stderr.log`
+* Fix missing libraries/config
+
+---
+
+## ⚠️ Scenario 6: Deployment Failure
+
+### Causes:
+
+* Corrupt zip
+* Wrong structure
+* Missing files
+
+### Fix:
+
+* Repackage app
+* Check logs → **Events + Logs**
+
+---
+
+## ⚠️ Scenario 7: Works Locally but Not Cloud
+
+### Causes:
+
+* Missing dependencies
+* Environment variables not set
+* Different OS/config
+
+### Fix:
+
+* Add requirements (requirements.txt / package.json)
+* Check logs
+
+---
+
+## ⚠️ Scenario 8: Blank Output
+
+### Causes:
+
+* Runtime error
+* Wrong entry file
+* DB/API failure
+
+### Fix:
+
+* Check logs
+* Verify routing/index file
+
+---
+
+## ⚠️ Scenario 9: URL Not Accessible
+
+### Causes:
+
+* Still launching
+* Failed deployment
+
+### Check:
+
+* Status = Green?
+* Events tab
+
+---
+
+## ⚠️ Scenario 10: Resources Not Deleted
+
+### Problem:
+
+💸 You get charged!
+
+### Running services:
+
+* EC2
+* Load Balancer
+* Auto Scaling
+
+### Fix:
+
+* Delete **Environment + Application**
+
+---
+
+## ⚠️ Scenario 11: High Traffic
+
+### How it handles:
+
+* Auto Scaling Group increases instances
+
+### Required:
+
+* Enable scaling
+* Load balancer
+
+### Without scaling:
+
+❌ App crashes / slow
+
+---
+
+## ⚠️ Scenario 12: Update Not Showing
+
+### Causes:
+
+* Old version cached
+* Deployment failed
+
+### Fix:
+
+* Redeploy app
+* Clear browser cache
+* Check version deployed
+
+---
+
+# 🎯 FINAL MEMORY SHORTCUT
+
+```id="5l6wz8"
+1. Create App
+2. Create Environment
+3. Select Platform
+4. Upload Code
+5. Configure Access
+6. Configure Network
+7. Deploy
+8. Get URL
+```
+
+---
+
+## 👍 Honest Check
+
+✔️ These steps are **accurate for AWS console**
+✔️ Matches **real lab + exam expectations**
+✔️ Covers **common errors teachers ask**
+
+---
+
