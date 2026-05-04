@@ -1,0 +1,154 @@
+You’re basically trying to build a **simple event-driven pipeline**:
+
+> 📂 Upload file → ⚡ Lambda runs → 🗄️ Data stored in database
+
+Let me clean this up and explain it properly so you actually understand what’s happening.
+
+---
+
+# ✅ What you are building
+
+You’re connecting three AWS services:
+
+* Amazon S3 → stores files
+* AWS Lambda → runs code automatically
+* Amazon DynamoDB → stores structured data
+
+---
+
+# 🔁 Flow (very important)
+
+1. You upload a file to S3
+2. S3 sends an event
+3. Lambda gets triggered
+4. Lambda extracts file info
+5. Lambda stores that info in DynamoDB
+
+---
+
+# 🧠 Step-by-step (clean version)
+
+## 🔹 Step 1: Create S3 Bucket
+
+* Go to S3
+* Click **Create bucket**
+* Give name (e.g., `my-upload-bucket`)
+* Keep defaults → Create
+
+---
+
+## 🔹 Step 2: Create DynamoDB Table
+
+* Go to DynamoDB → Create table
+* Table name: `newtable2`
+* Primary key: `unique` (String)
+
+---
+
+## 🔹 Step 3: Create Lambda Function
+
+* Go to Lambda → Create function
+* Name: `S3ToDynamoDB`
+* Runtime: Python 3.x
+-> In Additional settings: select Custom execution role then select LabRole
+* Permissions:
+  👉 **Use existing role (important in labs)**
+
+---
+
+## 🔹 Step 4: Add Lambda Code
+
+```python
+import boto3
+from uuid import uuid4
+
+def lambda_handler(event, context):
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('newtable2')
+
+    if 'Records' in event:
+        for record in event['Records']:
+            bucket_name = record['s3']['bucket']['name']
+            object_key = record['s3']['object']['key']
+            size = record['s3']['object'].get('size', -1)
+            event_name = record['eventName']
+            event_time = record['eventTime']
+
+            table.put_item(
+                Item={
+                    'unique': str(uuid4()),
+                    'Bucket': bucket_name,
+                    'Object': object_key,
+                    'Size': size,
+                    'Event': event_name,
+                    'EventTime': event_time
+                }
+            )
+    else:
+        print("No S3 event received")
+
+    return {
+        "statusCode": 200,
+        "body": "Stored in DynamoDB"
+    }
+```
+
+---
+
+## 🔹 Step 5: Add S3 Trigger
+
+* In Lambda → **Add trigger**
+* Select **S3**
+* Choose your bucket
+* Event type:
+  👉 `PUT (Object Created)`
+* Enable trigger
+
+---
+
+## 🔹 Step 6: Deploy
+
+* Click **Deploy**
+
+---
+
+## 🔹 Step 7: Test It
+
+1. Upload any file to S3
+2. Go to DynamoDB
+3. Open `newtable2`
+4. You should see a new record 🎉
+
+---
+
+# 🔍 What gets stored in DynamoDB
+
+Each upload creates something like:
+
+```json
+{
+  "unique": "random-id",
+  "Bucket": "my-upload-bucket",
+  "Object": "file.txt",
+  "Size": 123,
+  "Event": "ObjectCreated:Put",
+  "EventTime": "2026-05-04T10:00:00Z"
+}
+```
+
+---
+
+# ⚠️ Common issues (important)
+
+* ❌ Permission error → use existing role
+* ❌ Trigger not working → check S3 event config
+* ❌ No data → check CloudWatch logs
+* ❌ Wrong table name → must match exactly
+
+---
+
+# 🧾 One-line understanding
+
+👉 You built a system where **uploading a file automatically logs its details into a database**
+
+---
