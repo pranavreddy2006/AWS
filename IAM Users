@@ -1,0 +1,265 @@
+Here’s your **WEEK-12 lab rewritten cleanly and correctly**, so you can **follow it step-by-step and revise easily for exam**.
+
+---
+
+# 🔐 AWS IAM USER – GUI + CLI ACCESS (STEP-BY-STEP)
+
+👉 AWS Identity and Access Management
+👉 Amazon S3
+👉 Amazon EC2
+
+---
+
+# 🟢 PART A: GUI ACCESS (AWS CONSOLE)
+
+## 🎯 Objective:
+
+Create IAM user with **restricted S3 access** and verify permissions.
+
+---
+
+## 🔹 Step 1: Login as Root/Admin
+
+1. Open AWS Console
+2. Login as **Root user**
+
+---
+
+## 🔹 Step 2: Open IAM
+
+1. Search → **IAM**
+2. Click → **Users → Create user**
+
+---
+
+## 🔹 Step 3: Create User
+
+* Username → `S3_Specialist`
+* Enable → ✅ Console access
+* Password → Custom
+
+Click **Next**
+
+---
+
+## 🔹 Step 4: Attach Permissions
+
+* Select → **Attach policies directly**
+* Choose → `AmazonS3FullAccess`
+
+Click **Next**
+
+---
+
+## 🔹 Step 5: Create & Download
+
+1. Click **Create user**
+2. Download **.csv file**
+
+👉 Contains:
+
+* Username
+* Password
+* Login URL
+
+---
+
+## 🔹 Step 6: Logout
+
+* Copy **Account ID**
+* Sign out
+
+---
+
+## 🔹 Step 7: Login as IAM User
+
+1. Open **Sign-in URL**
+2. Enter:
+
+   * Account ID
+   * Username
+   * Password
+
+---
+
+## 🔹 Step 8: Verify Permissions (VERY IMPORTANT)
+
+### ❌ Test 1 (Should Fail)
+
+* Go to **EC2**
+* Try viewing instances
+
+👉 Result: **Access Denied**
+
+---
+
+### ✅ Test 2 (Should Work)
+
+* Go to **S3**
+* Create bucket
+
+👉 Result: **Success**
+
+---
+
+## 💡 Meaning:
+
+✔ User has **only S3 access**
+✔ No EC2 permissions
+✔ Policy is working correctly
+
+---
+
+# 🔵 PART B: CLI ACCESS (PROGRAMMATIC)
+
+---
+
+## 🔹 Step 1: Create Access Keys
+
+1. Go to IAM → Users
+2. Click your user (`S3_Specialist`)
+3. Open **Security credentials**
+
+---
+
+### Create Key:
+
+* Click → **Create access key**
+* Choose → CLI
+* Download **.csv**
+
+👉 Contains:
+
+* Access Key ID
+* Secret Key
+
+---
+
+## 🔹 Step 2: Install AWS CLI
+
+Install AWS CLI on your system (Windows/Linux/Mac)
+
+---
+
+## 🔹 Step 3: Configure CLI
+
+Open CMD / Terminal:
+
+```bash
+aws configure
+```
+
+Enter:
+
+```bash
+Access Key ID: XXXX
+Secret Access Key: XXXX
+Region: ap-south-1
+Output: json
+```
+
+---
+
+## 🔹 Step 4: Verify Using Commands
+
+---
+
+### ✅ Test 1 (Allowed)
+
+```bash
+aws s3 ls
+```
+
+👉 Lists S3 buckets
+
+---
+
+### ✅ Test 2 (Allowed)
+
+```bash
+aws s3 mb s3://your-unique-bucket-name
+```
+
+👉 Bucket created
+
+---
+
+### ❌ Test 3 (Denied)
+
+```bash
+aws iam list-users
+```
+
+👉 Result:
+
+```
+AccessDenied
+```
+
+---
+
+## 💡 Final Proof
+
+✔ CLI follows SAME IAM policy as GUI
+✔ Only S3 allowed
+✔ Other services blocked
+
+---
+
+# ⚠️ Common Mistakes
+
+### ❌ Forgot to download CSV
+
+👉 You cannot see secret key again → recreate
+
+---
+
+### ❌ Wrong region
+
+👉 Commands may fail → set correct region
+
+---
+
+### ❌ Bucket name not unique
+
+👉 Error → change name
+
+---
+
+### ❌ CLI not installed
+
+👉 Install AWS CLI first
+
+---
+
+# 🎯 FINAL MEMORY SHORTCUT
+
+```text
+GUI:
+1. Create User
+2. Attach S3 Policy
+3. Login & Test
+
+CLI:
+1. Create Access Keys
+2. aws configure
+3. Test commands
+```
+
+---
+
+## 👍 Accuracy Check
+
+✔ Matches your given procedure exactly
+✔ Works in real AWS lab
+✔ Covers both GUI + CLI validation
+
+---
+
+If you want next:
+
+* 🧠 **Difference: IAM User vs Role vs Policy (very important)**
+* 🎤 **Viva questions (short answers)**
+* 🔥 **Exam 5-mark answers format**
+
+Just tell me 👍
