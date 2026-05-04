@@ -1,0 +1,327 @@
+Got it — you want **clear, step-by-step instructions you can follow and save** (like a lab manual). I’ll give you a **clean practical guide** you can directly use in AWS.
+
+---
+
+# 🧪 AWS LAB: SNS + SQS + S3 + Lambda (Step-by-Step)
+
+---
+
+## 🔹 PART 1: Create SNS + Email Notification
+
+👉 Amazon SNS
+
+### ✅ Steps:
+
+1. Login to AWS Console
+2. Search → **SNS**
+3. Click **Topics → Create topic**
+
+**Configure:**
+
+* Type → Standard
+* Name → `MyEmailTopic`
+
+Click **Create topic**
+
+---
+
+### 📧 Create Email Subscription
+
+4. Open your topic
+5. Go to **Subscriptions → Create subscription**
+
+**Configure:**
+
+* Protocol → Email
+* Endpoint → Your email
+
+Click **Create**
+
+---
+
+### ✔️ Confirm Email
+
+6. Open your email
+7. Click **Confirm subscription**
+
+---
+
+### 🧪 Test
+
+8. Select topic then Click **Publish message**
+
+* Subject → Test
+* Message → Hello SNS
+
+👉 You should receive email
+
+---
+
+# 🔹 PART 2: S3 → SNS (File Upload Email)
+
+👉 Amazon S3
+
+---
+
+### 🪣 Create S3 Bucket
+
+1. Search → **S3**
+2. Click **Create bucket**
+
+**Configure:**
+
+* Name → `my-upload-bucket-2026`
+* Region → SAME as SNS
+
+Click **Create**
+
+---
+
+### 🔐 Allow S3 to Send to SNS
+
+3. Open SNS Topic
+4. Go to **Access Policy → Edit**
+
+Paste this (replace values):
+
+```json
+{
+ "Version": "2012-10-17",
+ "Statement": [
+ {
+ "Effect": "Allow",
+ "Principal": {"Service": "s3.amazonaws.com"},
+ "Action": "SNS:Publish",
+ "Resource": "YOUR_SNS_ARN",
+ "Condition": {
+   "ArnLike": {"aws:SourceArn": "YOUR_S3_ARN"},
+   "StringEquals": {"aws:SourceAccount": "YOUR_ACCOUNT_ID"}
+ }
+ }
+ ]
+}
+```
+
+---
+
+### 🔔 Configure S3 Event
+
+5. Open S3 bucket
+6. Go to **Properties → Event notifications → Create**
+
+**Configure:**
+
+* Name → UploadEvent
+* Event → All object create events
+* Destination → SNS Topic
+
+Click **Save**
+
+---
+
+### 🧪 Test
+
+7. Upload any file
+
+👉 You’ll get email notification
+
+---
+
+# 🔹 PART 3: Create SQS Queue
+
+👉 Amazon SQS
+
+---
+
+### ✅ Steps:
+
+1. Search → **SQS**
+2. Click **Create queue**
+
+**Configure:**
+
+* Type → Standard
+* Name → `MyQueue`
+
+Click **Create**
+
+---
+
+### 🧪 Test Queue
+
+3. Open queue
+4. Click **Send message**
+
+* Message → Hello SQS
+
+5. Click **Poll for messages**
+
+👉 You’ll see the message
+
+---
+
+# 🔹 PART 4: Connect SNS → SQS
+
+---
+
+### 🔗 Subscribe SQS to SNS
+
+1. Open SNS Topic
+2. Click **Create subscription**
+
+**Configure:**
+
+* Protocol → Amazon SQS
+* Endpoint → Select your queue
+
+Click **Create**
+
+---
+
+### 🔐 Allow SNS → SQS
+
+3. Open SQS → **Access Policy → Edit**
+
+Paste:
+
+```json
+{
+ "Statement": [
+ {
+ "Effect": "Allow",
+ "Principal": {"Service": "sns.amazonaws.com"},
+ "Action": "sqs:SendMessage",
+ "Resource": "YOUR_SQS_ARN",
+ "Condition": {
+   "ArnEquals": {"aws:SourceArn": "YOUR_SNS_ARN"}
+ }
+ }
+ ]
+}
+```
+
+Click **Save**
+
+---
+
+# 🔹 PART 5: S3 → SNS → SQS (Full Flow)
+
+---
+
+### 🔁 Update S3 Event
+
+1. Open S3 bucket
+2. Go to **Event notifications**
+3. Ensure destination = SNS topic
+
+---
+
+### 🧪 Test
+
+2. Upload file
+
+👉 Flow happens:
+
+```
+S3 → SNS → SQS
+```
+
+---
+
+### 📥 Check SQS
+
+3. Open SQS
+4. Click **Poll for messages**
+
+👉 You’ll see S3 event message
+
+---
+
+# 🔹 PART 6: Add Lambda (Auto Processing)
+
+👉 AWS Lambda
+
+---
+
+### ⚙️ Create Lambda
+
+1. Search → **Lambda**
+2. Click **Create function**
+
+**Configure:**
+
+* Name → `SQSConsumerFunction`
+* Runtime → Python
+
+Click **Create**
+
+---
+
+### 🔗 Add Trigger
+
+3. Click **Add Trigger**
+4. Select **SQS**
+5. Choose your queue
+
+Click **Add**
+
+---
+
+### 💻 Add Code
+
+Replace with:
+
+```python
+def lambda_handler(event, context):
+    for record in event['Records']:
+        print("Message from SQS:")
+        print(record['body'])
+
+    return {
+        'statusCode': 200,
+        'body': 'Success'
+    }
+```
+
+Click **Deploy**
+
+---
+
+### 🧪 Final Test
+
+1. Upload file to S3
+
+👉 Full system works:
+
+```
+S3 → SNS → SQS → Lambda
+```
+
+---
+
+# 🎯 FINAL RESULT
+
+✔ File upload triggers event
+✔ SNS sends notification
+✔ SQS stores message
+✔ Lambda processes automatically
+
+---
+
+## 💾 Tip (For Saving)
+
+If you’re writing notes, save like this:
+
+```
+1. Create SNS
+2. Add Email
+3. Create S3
+4. Link S3 → SNS
+5. Create SQS
+6. Link SNS → SQS
+7. Create Lambda
+8. Link SQS → Lambda
+```
+
+---
+
