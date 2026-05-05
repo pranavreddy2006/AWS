@@ -1,0 +1,135 @@
+Log File Analysis for Incident Detection
+
+tep 1: Navigate to Log Directory
+cd /var/log
+ls
+Observation:
+You will see files such as:
+dpkg.log → package activity
+apache2/ → web logs
+nginx/ → web logs
+journal/ → system logs
+wtmp, btmp → login records
+
+Step 2: View Successful Login History
+last
+Purpose:
+Displays successful login sessions
+Helps identify unusual login times
+
+Step 3: View Failed Login Attempts
+sudo lastb
+Purpose:
+Shows failed login attempts
+Useful for detecting brute force attacks
+
+Step 4: Analyze System Logs
+journalctl | less
+Purpose:
+View full system logs
+Includes services, authentication, errors
+
+Step 5: Filter Failed Login Attempts
+journalctl | grep "Failed password"
+Purpose:
+Detect authentication failures
+Identify possible attack attempts
+
+Step 6: View SSH Activity
+journalctl | grep ssh
+Purpose:
+Shows SSH login attempts
+Tracks remote access activity
+
+Step 7: Detect Errors
+journalctl | grep -i error
+Purpose:
+Identify abnormal system behavior
+Detect issues or attacks
+
+Step 8: Analyze Apache Logs (Web Activity)
+cd /var/log/apache2
+ls
+Open log file:
+sudo less access.log
+Purpose:
+Monitor web requests
+Detect suspicious browsing behavior
+
+Step 9: Detect Suspicious Web Requests
+grep "404" /var/log/apache2/access.log
+Purpose:
+Identify failed page requests
+Indicates scanning or probing
+
+Step 10: Check Package Activity
+less /var/log/dpkg.log
+Purpose:
+Detect unauthorized installations
+Track system changes
+
+Step 11: Real-Time Log Monitoring
+sudo journalctl -f
+Purpose:
+Monitor logs live
+Detect incidents instantly
+
+5. Attack Simulation (IMPORTANT PART)
+
+Step 12: Install SSH Server (if not installed)
+sudo apt update
+sudo apt install openssh-server -y
+
+Step 13: Start SSH Service
+sudo service ssh start
+
+Step 14: Find IP Address
+ip a
+Look for:
+inet 192.168.x.x
+
+Step 15: Generate Failed Login Attempts
+ssh fakeuser@localhost
+OR
+ssh kali@localhost
+👉 Enter wrong password 5–10 times
+
+Step 16: Detect Failed Logins
+journalctl | grep "Failed password"
+Output Example:
+Failed password for kali from 127.0.0.1 port 22
+
+Step 17: Extract Suspicious IP Address
+journalctl | grep "Failed password" | awk '{print $11}'
+Output:
+127.0.0.1
+
+Step 18: Count Number of Attempts
+journalctl | grep "Failed password" | awk '{print $11}' | sort | uniq -c | sort -nr
+Example Output:
+10 127.0.0.1
+
+Step 19: Analyze Recent Activity
+journalctl --since "10 minutes ago"
+Purpose:
+View recent suspicious events
+
+6. Analysis of Observed Logs
+✔ Normal Activities:
+System services (systemd, cleanup services)
+CRON jobs (scheduled tasks)
+User sudo commands
+GUI services
+⚠ Abnormal but Not Attack:
+Repeated VirtualBox messages
+Indicates system/VM issue (not hacking)
+🚨 Suspicious Activity:
+Multiple failed login attempts
+Same IP repeated
+Indicates brute force attack
+
+7. Result
+Successfully analyzed system logs
+Detected failed SSH login attempts
+Identified suspicious IP address
+Observed normal vs abnormal system behavior
