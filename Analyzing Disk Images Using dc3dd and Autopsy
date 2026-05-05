@@ -1,0 +1,109 @@
+Creating and Analyzing Disk Images Using dc3dd and Autopsy
+Step 1: Start Kali Linux
+Boot your Kali Linux VM
+Log in and open terminal:
+Ctrl + Alt + T
+
+Step 2: Create Sample Evidence
+Create a file that will later be found during analysis:
+echo "Cybersecurity Lab Evidence" > evidence.txt
+Verify:
+ls
+
+Step 3: Identify Disk Partition
+List available storage devices:
+lsbl
+Example:
+sda
+├─sda1
+├─sda2
+👉 Note the partition (e.g., /dev/sda1)
+⚠️ In real forensics, this is the target disk
+
+Step 4: Install dc3dd (if not installed)
+sudo apt update
+sudo apt install dc3dd
+
+Step 5: Create a Forensic Disk Image
+✅ Correct Command (IMPORTANT)
+sudo dc3dd if=/dev/sda1 of=/home/kali/disk_image.dd hash=md5 log=/home/kali/acquisition.log
+Explanation
+if= → input file (source disk/partition)
+of= → output file (image file)
+hash=md5 → generates hash
+log= → saves acquisition details
+
+Step 6: Verify Image Creation
+Check image:
+ls -lh /home/kali/disk_image.dd
+View log:
+cat /home/kali/acquisition.log
+✔ Log contains:
+Image size
+Hash value
+Acquisition details
+Step 7: Verify Hash Manually (Optional but Recommended)
+md5sum /home/kali/disk_image.dd
+👉 Compare with hash in log file
+✔ If both match → integrity confirmed
+
+Step 8: Start Autopsy
+Run:
+autopsy
+Open browser and go to:
+http://localhost:9999/autopsy
+
+Step 9: Create New Case in Autopsy
+In the interface:
+Click Create New Case
+Enter:
+Case Name: Disk Investigation
+Description: Forensic Analysis Experiment
+Click Next
+
+Step 10: Add Host
+Click Add Host
+Enter:
+Host Name: KaliLabMachine
+Description: Kali Linux forensic machine
+Click Next → Finish
+
+Step 11: Add Disk Image
+Click Add Image
+Browse and select:
+/home/kali/disk_image.dd
+Click Next → Finish
+Autopsy will begin analysis.
+
+Step 12: Analyze Evidence
+1. File System
+Go to File Views → File System
+Locate:
+evidence.txt
+Open and verify content
+
+2. Keyword Search
+Use Keyword Search
+Enter:
+Cybersecurity
+View matching results
+
+3. Deleted Files
+Go to Deleted Files
+Check recoverable files
+
+4. Metadata Analysis
+Check:
+Created time
+Modified time
+File size
+
+5. Extract Evidence
+Right-click file → Extract File
+Save for reporting
+
+Final Result
+Disk image successfully created
+Hash verified (data integrity ensured)
+Evidence file located in Autopsy
+Analysis of files and metadata completed
