@@ -1,0 +1,128 @@
+Privacy Audit of Popular Apps (Desktop WhatsApp) and Websites (Facebook) & Data Breach Case Study Analysis
+
+PART 1: Setup WhatsApp Desktop
+Step 1: Install Node.js and npm
+sudo apt update
+sudo apt install nodejs npm -y
+Step 2: Install Nativefier
+sudo npm install -g nativefier
+Step 3: Create WhatsApp Desktop App
+nativefier https://web.whatsapp.com
+👉 A folder will be created like:
+web-whatsapp-linux-x64
+Step 4: Run WhatsApp Desktop
+cd WhatsAppWeb-linux-x64
+./WhatsAppWeb
+Step 5: Login
+Open mobile WhatsApp
+Go to Linked Devices
+Scan QR code
+
+PART 2: Privacy Audit of WhatsApp
+Step 6: Analyze Trackers (Exodus Privacy)
+Open browser
+Go to:
+https://reports.exodus-privacy.eu.org
+Search for WhatsApp
+Observation
+Trackers detected:
+Google Analytics
+Crashlytics
+Facebook Analytics
+👉 Record:
+Number of trackers
+Permissions used
+Step 7: Start Wireshark
+wireshark
+Select interface (eth0 / wlan0)
+Click Start Capture
+Step 8: Generate Network Traffic
+In WhatsApp Desktop:
+Send messages
+Send images
+Open chats
+Step 9: Apply Filters in Wireshark
+Use:
+tls
+dns
+Step 10: Analyze Traffic
+Observations
+Traffic is encrypted (TLS)
+Domains observed:
+whatsapp.net
+facebook.com
+Findings
+End-to-End Encryption present
+Message content NOT visible
+Metadata visible:
+IP address
+Time
+Server communication
+
+PART 3: Privacy Audit of Facebook Website
+Step 11: Open Facebook
+Go to:
+👉 Facebook
+Login using a test account
+Step 12: Start Burp Suite
+burpsuite
+Step 13: Configure Proxy
+In Burp:
+IP: 127.0.0.1
+Port: 8080
+In Firefox:
+Settings → Network → Manual Proxy
+Enter same IP and Port
+Step 14: Intercept Traffic
+Turn Intercept ON
+Reload Facebook
+Observe
+Cookies:
+datr
+fr
+Session IDs
+HTTP headers
+Step 15: Analyze Tracking (Browser DevTools)
+Press F12 → Network tab
+Look for:
+Ads
+Analytics scripts
+Third-party requests
+Step 16: Findings (Facebook)
+Heavy tracking observed
+Uses cookies for personalization
+Third-party integrations present
+
+PART 4: Data Breach Case Study
+Case Study 1: Facebook Data Breach
+533 million users affected
+Data exposed:
+Phone numbers
+Emails
+Cause:
+API vulnerability
+Case Study 2: WhatsApp Pegasus Attack
+Spyware attack via missed call
+Remote device access without user interaction
+Step 17: Check Email Breach
+Go to:
+👉 Have I Been Pwned
+Enter email
+Check breach status
+5. Analysis Points
+Type of attack
+Vulnerability
+Data exposed
+Prevention methods
+
+6. Observations
+WhatsApp uses strong encryption (secure communication)
+Facebook performs extensive tracking
+Network traffic is encrypted but metadata is visible
+Data breaches occur due to vulnerabilities
+
+7. Result
+Privacy audit was successfully performed using Kali Linux tools.
+WhatsApp ensures secure communication through encryption
+Facebook shows extensive tracking behavior
+Data breach analysis highlighted risks due to poor security practices
