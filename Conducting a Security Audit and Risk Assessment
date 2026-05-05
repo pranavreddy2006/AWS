@@ -1,0 +1,141 @@
+Conducting a Security Audit and Risk Assessment
+
+Step 1: Check System Information
+Steps:
+Press Windows + R
+Type:
+msinfo32
+Check:
+OS Version
+System Type
+Secure Boot Status
+Observation:
+Windows 11 (64-bit)
+Intel i5 processor
+UEFI architecture
+Secure Boot enabled
+Analysis:
+Secure Boot prevents unauthorized boot loaders and improves system integrity.
+
+Step 2: Check Windows Updates
+Steps:
+Open Settings → Windows Update
+Click Check for updates
+Observation:
+Updates available / pending
+Analysis:
+Pending updates expose the system to known vulnerabilities.
+Regular updates are critical for security.
+
+Step 3: Check Firewall Status
+Steps:
+Search: Windows Defender Firewall
+Click Turn Windows Defender Firewall on/off
+Observation:
+Managed by Kaspersky (third-party firewall)
+Analysis:
+A third-party firewall enhances protection, but misconfiguration can create risks.
+
+Step 4: Check Antivirus Status
+Steps:
+Open Windows Security
+Go to Virus & Threat Protection
+Check:
+Real-time protection → ON
+Last scan → Recent
+Observation:
+Kaspersky antivirus active
+No threats detected
+Analysis:
+Active antivirus protects against malware, phishing, and threats.
+
+Step 5: Check Account & Password Security
+Steps:
+Settings → Accounts → Sign-in options
+Check:
+Password / PIN enabled
+Windows Hello (optional)
+Observation:
+Password + PIN authentication enabled
+Analysis:
+Multi-factor authentication improves access security.
+
+Step 6: Check Installed Applications
+Steps:
+Settings → Apps → Installed apps
+Look for:
+Unknown software
+Cracked tools
+Observation:
+No suspicious applications found
+Analysis:
+Unauthorized software may introduce malware.
+
+Step 7: Check Startup Programs
+Steps:
+Press Ctrl + Shift + Esc
+Go to Startup tab
+Action:
+Disable unknown applications
+Observation:
+Some apps enabled at startup
+Analysis:
+Reducing startup apps:
+Improves performance
+Reduces attack surface
+
+Step 8: Check Network Security
+Steps:
+Settings → Network & Internet
+Check:
+Wi-Fi status
+Network profile (Public/Private)
+Observation:
+Connected to Wi-Fi
+Network type: Public
+Analysis:
+Public network:
+Limits device visibility
+Improves security in untrusted environments
+
+Step 9: Check Browser Security
+Steps (Chrome/Edge):
+Settings → Privacy & Security
+Check:
+Safe Browsing → ON
+Remove unknown extensions
+Observation:
+Safe browsing enabled
+Analysis:
+Protects against:
+Phishing
+Malicious downloads
+
+Step 10: Check Data Backup
+Steps:
+Search: Backup settings
+Check:
+OneDrive / External backup
+Observation:
+Backup not configured
+Analysis:
+No backup = high risk of data loss (e.g., ransomware attacks)
+
+5. Risk Assessment Table
+Asset	Threat	Vulnerability	Risk Level	Solution
+Personal Files	Data Loss	No Backup	High	Enable OneDrive
+System	Malware	Unknown Apps	High	Remove apps
+Network	Hacking	Public Network	Medium	Use Private
+Account	Unauthorized Access	Weak Password	High	Strong password
+
+6. Security Recommendations
+✔ Technical Controls
+Enable firewall
+Enable antivirus
+Perform regular updates
+✔ Administrative Controls
+Use strong passwords
+Avoid installing unknown software
+✔ User Awareness
+Avoid phishing links
+Practice safe browsing
